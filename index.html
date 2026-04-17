@@ -616,7 +616,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
 
   <div class="story-cta anim-in anim-delay-3">
     <p>The next two tabs show this architecture in action.<br><strong>Live Modules</strong> rebuilds the actual Plan Pulse report sections. <strong>Under the Hood</strong> shows the raw code separation.</p>
-    <button class="cta-btn" onclick="document.querySelectorAll('.nav-tab')[1].click()">
+    <button class="cta-btn" onclick="var t=document.querySelectorAll('.nav-tab')[1]; goPage('modules', t);">
       See the live modules
       <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -938,28 +938,30 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
 <script>
 // ── NAVIGATION ──────────────────────────────────────────────
 function goPage(id, tabEl) {
-  // Hide all pages
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
+
+  // Hide all OTHER pages immediately
   document.querySelectorAll('.page').forEach(p => {
-    p.classList.remove('visible');
-    setTimeout(() => p.classList.remove('active'), 300);
+    if (p !== target) {
+      p.classList.remove('visible');
+      p.classList.remove('active');
+    }
   });
 
-  // Deactivate tabs
+  // Update tabs
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   if (tabEl) tabEl.classList.add('active');
 
-  // Show target page with animation
-  setTimeout(() => {
-    const page = document.getElementById('page-' + id);
-    page.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'instant' });
+  // Show target page
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        page.classList.add('visible');
-        triggerAnimations(page);
-      });
+      target.classList.add('visible');
+      triggerAnimations(target);
     });
-  }, 200);
+  });
 
   // Initialize interactive elements
   if (id === 'modules') {
@@ -967,7 +969,7 @@ function goPage(id, tabEl) {
       recalcFunding();
       runMonteCarlo();
       animateGauge(72);
-    }, 500);
+    }, 300);
   }
 }
 

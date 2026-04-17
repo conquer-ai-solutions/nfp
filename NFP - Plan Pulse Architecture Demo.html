@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Pulse — Architecture Demo | Conquer AI x NFP</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   PLAN PULSE — CONQUER AI x NFP
+   Ultra High-Fidelity Architecture Demo
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  --bg-deep: #08090c;
+  --bg: #0c0d12;
+  --bg-card: #14161e;
+  --bg-raised: #1a1d28;
+  --bg-hover: #1f2230;
+  --accent: #e8734a;
+  --accent-hover: #f2845e;
+  --accent-subtle: rgba(232,115,74,0.08);
+  --accent-glow: rgba(232,115,74,0.15);
+  --accent-glow-strong: rgba(232,115,74,0.3);
+  --green: #34d399;
+  --green-dim: #22c55e;
+  --green-bg: rgba(52,211,153,0.06);
+  --green-border: rgba(52,211,153,0.12);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251,191,36,0.06);
+  --amber-border: rgba(251,191,36,0.12);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.06);
+  --red-border: rgba(248,113,113,0.12);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96,165,250,0.06);
+  --blue-border: rgba(96,165,250,0.12);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,0.06);
+  --text: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-dim: #94a3b8;
+  --text-muted: #64748b;
+  --text-faint: #475569;
+  --border: rgba(255,255,255,0.05);
+  --border-light: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.12);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow: 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.4);
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── SUBTLE BACKGROUND GRID ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(232,115,74,0.03) 0%, transparent 50%),
+    linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+  background-size: 100% 100%, 64px 64px, 64px 64px;
+}
+
+/* ── TOP NAVIGATION ─── */
+.topnav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(8,9,12,0.85);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 56px;
+}
+
+.nav-left { display: flex; align-items: center; gap: 24px; }
+.logo {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent);
+  text-transform: uppercase;
+}
+.logo span { color: var(--text-muted); font-weight: 400; letter-spacing: 0.06em; }
+.nav-divider { width: 1px; height: 20px; background: var(--border-light); }
+
+.nav-tabs { display: flex; gap: 2px; background: rgba(255,255,255,0.03); border-radius: 10px; padding: 3px; }
+.nav-tab {
+  position: relative;
+  padding: 7px 18px; border-radius: 8px; font-size: 12.5px; font-weight: 500;
+  color: var(--text-muted); cursor: pointer; transition: all var(--transition);
+  border: none; background: none; letter-spacing: 0.01em;
+}
+.nav-tab:hover { color: var(--text-dim); }
+.nav-tab.active {
+  color: var(--text); background: rgba(255,255,255,0.06);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+.nav-tab .tab-num {
+  display: inline-block; width: 16px; height: 16px; border-radius: 4px;
+  font-size: 9px; font-weight: 700; line-height: 16px; text-align: center;
+  margin-right: 6px; background: rgba(255,255,255,0.06); color: var(--text-muted);
+  transition: all var(--transition);
+}
+.nav-tab.active .tab-num { background: var(--accent-subtle); color: var(--accent); }
+
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.badge {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.06em;
+  padding: 5px 11px; border-radius: 20px;
+  transition: all var(--transition);
+}
+.badge-accent { background: var(--accent-subtle); color: var(--accent); border: 1px solid rgba(232,115,74,0.12); }
+.badge-purple { background: var(--purple-bg); color: var(--purple); border: 1px solid rgba(167,139,250,0.12); }
+
+/* ── PAGE SYSTEM ─── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1000px; margin: 0 auto; padding: 0 32px;
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  display: none;
+}
+.page.active { display: block; }
+.page.visible { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE 1: THE STORY
+   ══════════════════════════════════════════════════════════════ */
+
+.hero {
+  text-align: center; padding: 72px 0 48px;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,115,74,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 20px;
+  padding: 6px 14px; border-radius: 20px;
+  background: var(--accent-subtle); border: 1px solid rgba(232,115,74,0.1);
+}
+.hero-eyebrow .pulse {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(232,115,74,0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(232,115,74,0); }
+}
+
+.hero h1 {
+  font-size: 40px; font-weight: 800; line-height: 1.2; letter-spacing: -0.03em;
+  color: var(--text);
+  max-width: 650px; margin: 0 auto;
+}
+.hero h1 .highlight {
+  background: linear-gradient(135deg, var(--accent) 0%, #f2a07e 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  margin-top: 16px; font-size: 16px; line-height: 1.7; color: var(--text-dim);
+  max-width: 520px; margin-left: auto; margin-right: auto; font-weight: 400;
+}
+.hero-client {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 24px; font-size: 11px; font-weight: 500; color: var(--text-muted);
+  padding: 6px 16px; border-radius: 20px;
+  background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+}
+.hero-client .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+
+/* Problem / Solution */
+.ps-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  margin: 48px 0 56px;
+}
+.ps-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.ps-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.ps-card.problem::before { background: linear-gradient(90deg, var(--red) 0%, transparent 100%); }
+.ps-card.solution::before { background: linear-gradient(90deg, var(--green) 0%, transparent 100%); }
+.ps-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.ps-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; margin-bottom: 16px;
+}
+.ps-icon.red { background: var(--red-bg); border: 1px solid var(--red-border); }
+.ps-icon.green { background: var(--green-bg); border: 1px solid var(--green-border); }
+
+.ps-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.ps-label.red { color: var(--red); }
+.ps-label.green { color: var(--green); }
+.ps-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.01em; }
+.ps-card p { font-size: 13.5px; color: var(--text-dim); line-height: 1.7; }
+.ps-list { list-style: none; margin-top: 14px; }
+.ps-list li {
+  font-size: 13px; color: var(--text-dim); line-height: 1.6;
+  padding: 6px 0 6px 22px; position: relative;
+}
+.ps-list li::before {
+  content: ''; position: absolute; left: 4px; top: 13px;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.problem .ps-list li::before { background: var(--red); opacity: 0.4; }
+.solution .ps-list li::before { background: var(--green); opacity: 0.4; }
+.ps-list li strong { color: var(--text-secondary); font-weight: 600; }
+
+/* Architecture Flow */
+.flow-section {
+  margin: 0 0 56px; text-align: center;
+}
+.flow-section h2 {
+  font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px;
+}
+.flow-section .sub {
+  font-size: 14px; color: var(--text-dim); margin-bottom: 36px;
+}
+
+.flow-row {
+  display: flex; align-items: stretch; justify-content: center; gap: 0;
+}
+.flow-node {
+  flex: 1; max-width: 280px;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 22px; text-align: center;
+  transition: all var(--transition);
+  position: relative; overflow: hidden;
+}
+.flow-node::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.flow-node.n-data::before { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+.flow-node.n-calc::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+.flow-node.n-render::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+.flow-node:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--border-hover); }
+
+.flow-num {
+  display: inline-block;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+  padding: 4px 10px; border-radius: 20px; margin-bottom: 12px;
+}
+.flow-num.blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.flow-num.amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.flow-num.green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+.flow-node h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.flow-node p { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+.flow-arrow {
+  display: flex; align-items: center; padding: 0 6px;
+  color: var(--text-faint); font-size: 20px;
+}
+.flow-arrow svg { width: 32px; height: 32px; opacity: 0.3; }
+
+/* CTA */
+.story-cta {
+  text-align: center; margin: 0 0 80px;
+  padding: 36px 40px; border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(232,115,74,0.04) 0%, rgba(167,139,250,0.03) 100%);
+  border: 1px solid rgba(232,115,74,0.08);
+  position: relative; overflow: hidden;
+}
+.story-cta::before {
+  content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: radial-gradient(circle at 50% 100%, rgba(232,115,74,0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+.story-cta p { font-size: 14.5px; color: var(--text-dim); line-height: 1.7; position: relative; }
+.story-cta strong { color: var(--text-secondary); }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 20px; padding: 11px 28px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--accent) 0%, #d4663f 100%);
+  color: white; border: none; cursor: pointer;
+  transition: all var(--transition); position: relative;
+  box-shadow: 0 2px 12px rgba(232,115,74,0.25);
+}
+.cta-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(232,115,74,0.35);
+}
+.cta-btn svg { width: 14px; height: 14px; transition: transform 0.2s; }
+.cta-btn:hover svg { transform: translateX(3px); }
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE 2: LIVE MODULES
+   ══════════════════════════════════════════════════════════════ */
+
+.page-header {
+  padding: 48px 0 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.page-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; }
+.page-header p { font-size: 14px; color: var(--text-dim); margin-top: 6px; line-height: 1.6; }
+
+/* Module cards */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-full { grid-column: 1 / -1; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all var(--transition);
+}
+.card:hover { border-color: var(--border-hover); box-shadow: var(--shadow-sm); }
+
+.card-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.15);
+}
+.card-title {
+  font-size: 13px; font-weight: 600; letter-spacing: -0.005em;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title .icon {
+  width: 22px; height: 22px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.card-title .icon.blue { background: var(--blue-bg); }
+.card-title .icon.amber { background: var(--amber-bg); }
+.card-title .icon.red { background: var(--red-bg); }
+.card-title .icon.green { background: var(--green-bg); }
+
+.tag {
+  font-size: 9px; font-weight: 600; padding: 3px 9px;
+  border-radius: 5px; letter-spacing: 0.04em;
+}
+.tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+.tag-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.tag-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.tag-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+.card-body { padding: 20px; }
+
+/* Metric cards */
+.metrics { display: flex; gap: 10px; flex-wrap: wrap; }
+.metric {
+  flex: 1; min-width: 100px;
+  background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 16px 14px; text-align: center;
+  transition: all var(--transition);
+}
+.metric:hover { border-color: var(--border-hover); background: rgba(0,0,0,0.25); }
+.metric .val {
+  font-size: 22px; font-weight: 700; margin-bottom: 4px;
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.metric .val.accent { color: var(--accent); }
+.metric .lbl {
+  font-size: 9.5px; color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.06em; font-weight: 500;
+}
+
+/* Gauge */
+.gauge-wrap { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 12px 0; }
+.gauge { position: relative; width: 140px; height: 140px; }
+.gauge svg { width: 140px; height: 140px; transform: rotate(-90deg); }
+.gauge-bg { fill: none; stroke: rgba(255,255,255,0.04); stroke-width: 10; }
+.gauge-fill {
+  fill: none; stroke-width: 10; stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.gauge-fill.good { stroke: var(--green); filter: drop-shadow(0 0 6px rgba(52,211,153,0.3)); }
+.gauge-fill.warn { stroke: var(--amber); filter: drop-shadow(0 0 6px rgba(251,191,36,0.3)); }
+.gauge-fill.bad { stroke: var(--red); filter: drop-shadow(0 0 6px rgba(248,113,113,0.3)); }
+.gauge-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+.gauge-num { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+.gauge-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+.legend { font-size: 12px; color: var(--text-dim); line-height: 2; }
+.legend-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  margin-right: 8px; vertical-align: middle;
+}
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.tbl th {
+  text-align: left; padding: 10px 12px; font-size: 9.5px; font-weight: 600;
+  color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--border-light);
+}
+.tbl td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+  color: var(--text-secondary); transition: background 0.15s;
+}
+.tbl tr:hover td { background: rgba(255,255,255,0.015); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
+.tbl .pos { color: var(--green); }
+.tbl .neg { color: var(--red); }
+.tbl .bold { font-weight: 600; color: var(--text); }
+.tbl .highlight-row td { background: var(--accent-subtle); }
+.tbl .highlight-row-green td { background: var(--green-bg); }
+
+.status {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 500;
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* Inputs */
+.input-group { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.input-field label {
+  display: block; font-size: 10px; font-weight: 600; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+}
+.input-field input {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); color: var(--text); font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 500; padding: 8px 12px; width: 100px;
+  text-align: right; font-variant-numeric: tabular-nums;
+  transition: all var(--transition);
+}
+.input-field input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(232,115,74,0.1);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 20px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
+  border: none; cursor: pointer; transition: all var(--transition);
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent) 0%, #d4663f 100%);
+  color: white; box-shadow: 0 2px 8px rgba(232,115,74,0.2);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(232,115,74,0.3); }
+
+/* Canvas */
+canvas { width: 100%; border-radius: var(--radius-sm); }
+
+/* Source note */
+.note {
+  margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm);
+  background: rgba(0,0,0,0.15); border: 1px solid var(--border);
+  font-size: 11px; color: var(--text-muted); line-height: 1.5;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.note-dot {
+  width: 5px; height: 5px; border-radius: 50%; margin-top: 5px; flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PAGE 3: UNDER THE HOOD
+   ══════════════════════════════════════════════════════════════ */
+
+.code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+.codeblock {
+  background: rgba(0,0,0,0.35); border-radius: var(--radius-sm);
+  padding: 18px 20px; font-family: 'SF Mono', 'Fira Code', 'Menlo', monospace;
+  font-size: 11.5px; line-height: 1.8; color: var(--text-dim);
+  white-space: pre; overflow-x: auto;
+  border: 1px solid var(--border);
+}
+.ck { color: var(--amber); }
+.cs { color: var(--green); }
+.cn { color: var(--blue); }
+.cc { color: var(--text-faint); font-style: italic; }
+
+/* ── ANIMATIONS ─── */
+.anim-in { opacity: 0; transform: translateY(16px); }
+.anim-visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease; }
+.anim-delay-1 { transition-delay: 0.1s !important; }
+.anim-delay-2 { transition-delay: 0.2s !important; }
+.anim-delay-3 { transition-delay: 0.3s !important; }
+.anim-delay-4 { transition-delay: 0.4s !important; }
+.anim-delay-5 { transition-delay: 0.5s !important; }
+
+/* ── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .topnav { padding: 0 16px; }
+  .nav-right { display: none; }
+  .page { padding: 0 16px; }
+  .hero h1 { font-size: 28px; }
+  .ps-grid, .grid, .code-grid, .flow-row { grid-template-columns: 1fr; }
+  .flow-arrow { transform: rotate(90deg); justify-content: center; padding: 8px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION
+     ═══════════════════════════════════════════════════════════ -->
+<nav class="topnav">
+  <div class="nav-left">
+    <div class="logo">Plan Pulse <span>&times; Conquer AI</span></div>
+    <div class="nav-divider"></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="goPage('story', this)">
+        <span class="tab-num">1</span>The Story
+      </button>
+      <button class="nav-tab" onclick="goPage('modules', this)">
+        <span class="tab-num">2</span>Live Modules
+      </button>
+      <button class="nav-tab" onclick="goPage('arch', this)">
+        <span class="tab-num">3</span>Under the Hood
+      </button>
+    </div>
+  </div>
+  <div class="nav-right">
+    <span class="badge badge-accent">ARCHITECTURE DEMO</span>
+    <span class="badge badge-purple">CONQUER AI</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 1: THE STORY
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-story">
+
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="pulse"></span> Architecture Proposal</div>
+    <h1>What if editing a label <span class="highlight">couldn't break the math?</span></h1>
+    <p class="hero-sub">Plan Pulse does critical work. But calculations and presentation are wired together today. One small change can cascade. Here's how we fix that.</p>
+    <div class="hero-client"><span class="dot"></span> Demo client: Congreso de Latinos Unidos</div>
+  </div>
+
+  <div class="ps-grid">
+    <div class="ps-card problem anim-in">
+      <div class="ps-icon red">&#x26A0;</div>
+      <div class="ps-label red">The problem today</div>
+      <h3>Math and templates are tangled</h3>
+      <p>Calculations live inside the same code that renders the report. That means:</p>
+      <ul class="ps-list">
+        <li>Renaming a label can silently break a formula</li>
+        <li>Updating a formula risks breaking the layout</li>
+        <li>Swapping in a new client's data means touching multiple files</li>
+        <li>No clean data layer to run QC checks against before anything renders</li>
+      </ul>
+    </div>
+    <div class="ps-card solution anim-in anim-delay-1">
+      <div class="ps-icon green">&#x2713;</div>
+      <div class="ps-label green">The fix</div>
+      <h3>Separate data, math, and display</h3>
+      <p>Three layers, each doing one job. Nothing else:</p>
+      <ul class="ps-list">
+        <li><strong>Layer 1 — Data:</strong> One JSON file per client. Single source of truth. Drop in new data, everything recalculates</li>
+        <li><strong>Layer 2 — Calculations:</strong> Pure math functions. Loss ratios, funding models, Monte Carlo. Isolated from HTML</li>
+        <li><strong>Layer 3 — Templates:</strong> Renders results to screen. Edit any label, move any element. The math can't see it</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="flow-section">
+    <h2>How the three layers connect</h2>
+    <div class="sub">Data flows in one direction. Each layer only talks to the next.</div>
+    <div class="flow-row">
+      <div class="flow-node n-data anim-in anim-delay-1">
+        <div class="flow-num blue">LAYER 1</div>
+        <h4>Client Data</h4>
+        <p>Structured JSON extracted from intake documents. Census, claims, plan details. One file per client.</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-node n-calc anim-in anim-delay-2">
+        <div class="flow-num amber">LAYER 2</div>
+        <h4>Calculation Engine</h4>
+        <p>Pure functions that take data in and return results. No HTML, no formatting, no side effects.</p>
+      </div>
+      <div class="flow-arrow">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 16h16m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="flow-node n-render anim-in anim-delay-3">
+        <div class="flow-num green">LAYER 3</div>
+        <h4>Report Templates</h4>
+        <p>Takes calculated results and renders them. Labels, layout, styling. Safe to edit. Nothing breaks.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="story-cta anim-in anim-delay-3">
+    <p>The next two tabs show this architecture in action.<br><strong>Live Modules</strong> rebuilds the actual Plan Pulse report sections. <strong>Under the Hood</strong> shows the raw code separation.</p>
+    <button class="cta-btn" onclick="var t=document.querySelectorAll('.nav-tab')[1]; goPage('modules', t);">
+      See the live modules
+      <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 2: LIVE MODULES
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-modules">
+
+  <div class="page-header">
+    <h2>Live Report Modules</h2>
+    <p>Each module below is rebuilt with three-layer architecture. The tag shows which layer drives it. Interactive modules let you change inputs and watch the calc engine re-run.</p>
+  </div>
+
+  <!-- Coverage Detail -->
+  <div class="grid">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon blue">$</span> Coverage Detail</div>
+        <span class="tag tag-blue">LAYER 1 — DATA</span>
+      </div>
+      <div class="card-body">
+        <div class="metrics">
+          <div class="metric"><div class="val accent" data-count="2210000" data-fmt="M">$2.21M</div><div class="lbl">Total Premium</div></div>
+          <div class="metric"><div class="val" data-count="1850000" data-fmt="M">$1.85M</div><div class="lbl">Employer Cost</div></div>
+          <div class="metric"><div class="val" data-count="357000" data-fmt="K">$357K</div><div class="lbl">Employee Cost</div></div>
+          <div class="metric"><div class="val" data-count="240" data-fmt="n">240</div><div class="lbl">Enrolled Members</div></div>
+        </div>
+        <div class="note"><span class="note-dot" style="background:var(--blue)"></span> Reads directly from clientData.coverage. No calculations. Pure data display from Layer 1.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Population + Benchmarking -->
+  <div class="grid">
+    <div class="card anim-in anim-delay-1">
+      <div class="card-head">
+        <div class="card-title"><span class="icon blue">&#x263A;</span> Population Overview</div>
+        <span class="tag tag-blue">LAYER 1 — DATA</span>
+      </div>
+      <div class="card-body">
+        <div class="metrics" style="flex-direction:column;">
+          <div class="metric"><div class="val">156</div><div class="lbl">Total Employees</div></div>
+          <div class="metric"><div class="val">84</div><div class="lbl">Dependents</div></div>
+          <div class="metric"><div class="val">38.8</div><div class="lbl">Average Age</div></div>
+          <div class="metric"><div class="val">84%</div><div class="lbl">Participation Rate</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card anim-in anim-delay-2">
+      <div class="card-head">
+        <div class="card-title"><span class="icon amber">&#x2605;</span> Benchmarking Score</div>
+        <span class="tag tag-amber">LAYER 2 — CALCULATED</span>
+      </div>
+      <div class="card-body">
+        <div class="gauge-wrap">
+          <div class="gauge">
+            <svg viewBox="0 0 140 140">
+              <circle class="gauge-bg" cx="70" cy="70" r="56" />
+              <circle class="gauge-fill warn" cx="70" cy="70" r="56"
+                stroke-dasharray="351.9" stroke-dashoffset="351.9" id="gauge-arc" />
+            </svg>
+            <div class="gauge-center">
+              <div class="gauge-num" id="gauge-num">0</div>
+              <div class="gauge-label">/ 100</div>
+            </div>
+          </div>
+          <div class="legend">
+            <div><span class="legend-dot" style="background:var(--green)"></span>80+ Excellent</div>
+            <div><span class="legend-dot" style="background:var(--amber)"></span>60-79 Moderate</div>
+            <div><span class="legend-dot" style="background:var(--red)"></span>Below 60 Review</div>
+          </div>
+        </div>
+        <div class="note"><span class="note-dot" style="background:var(--amber)"></span> Composite score computed by calcBenchmark(). Template only renders the number.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Financial Indicators -->
+  <div class="grid">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon amber">&#x25B2;</span> Key Financial Indicators</div>
+        <span class="tag tag-amber">LAYER 2 — CALCULATED</span>
+      </div>
+      <div class="card-body">
+        <table class="tbl">
+          <thead><tr><th>Metric</th><th class="num">Value</th><th class="num">Benchmark</th><th class="num">Variance</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="bold">Loss Ratio</td><td class="num">83.9%</td><td class="num">82.0%</td><td class="num neg">+1.9%</td>
+              <td><span class="status"><span class="status-dot" style="background:var(--amber)"></span>Watch</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Admin Cost PEPM</td><td class="num">$317</td><td class="num">$290</td><td class="num neg">+$27</td>
+              <td><span class="status"><span class="status-dot" style="background:var(--amber)"></span>Watch</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Stop-Loss Ratio</td><td class="num">34.8%</td><td class="num">30.0%</td><td class="num neg">+4.8%</td>
+              <td><span class="status"><span class="status-dot" style="background:var(--red)"></span>Flagged</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Network Discount</td><td class="num">42.1%</td><td class="num">38.0%</td><td class="num pos">+4.1%</td>
+              <td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Strong</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Employer Share</td><td class="num">83.8%</td><td class="num">78.0%</td><td class="num neg">+5.8%</td>
+              <td><span class="status"><span class="status-dot" style="background:var(--amber)"></span>Watch</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note"><span class="note-dot" style="background:var(--amber)"></span> Every value computed from clientData.claims. Rename any column header — the underlying math is untouched.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FI vs Self-Funded -->
+  <div class="grid">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon red">&#x21C4;</span> FI vs Self-Funded Cost Comparison</div>
+        <span class="tag tag-red">INTERACTIVE — ALL 3 LAYERS</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:16px;">Edit the assumptions, hit Recalculate. The calc engine re-runs. The template re-renders. The data layer stays constant.</p>
+        <div class="input-group">
+          <div class="input-field"><label>Trend Factor (%)</label><input id="a-trend" type="number" value="6.5" step="0.5"></div>
+          <div class="input-field"><label>Admin PEPM ($)</label><input id="a-admin" type="number" value="45" step="5"></div>
+          <div class="input-field"><label>Stop-Loss Load (%)</label><input id="a-sl" type="number" value="15" step="1"></div>
+          <div class="input-field"><label>Margin ($)</label><input id="a-margin" type="number" value="35000" step="5000"></div>
+        </div>
+        <button class="btn btn-primary" onclick="recalcFunding()">
+          Recalculate
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <table class="tbl" style="margin-top:16px;" id="funding-table">
+          <thead><tr><th>Component</th><th class="num">Fully Insured</th><th class="num">Self-Funded</th></tr></thead>
+          <tbody id="funding-body"></tbody>
+        </table>
+        <div class="note"><span class="note-dot" style="background:var(--green)"></span> Editable assumptions feed Layer 2, which recalculates, and Layer 3 re-renders. Zero hardcoded values in the table.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monte Carlo -->
+  <div class="grid">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon red">&#x2248;</span> Scenario Modeling — Monte Carlo</div>
+        <span class="tag tag-red">INTERACTIVE — LAYER 2 CALC</span>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;" id="mc-stats"></div>
+        <canvas id="mc-canvas" height="200" style="background:rgba(0,0,0,0.2);"></canvas>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:14px;">
+          <button class="btn btn-primary" onclick="runMonteCarlo()">
+            Re-run 10,000 simulations
+            <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13.5 8.5a5.5 5.5 0 11-2-4.2M13.5 2v2.5H11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span style="font-size:11px;color:var(--text-muted);">Each run produces a unique distribution</span>
+        </div>
+        <div class="note"><span class="note-dot" style="background:var(--amber)"></span> 10,000 simulations run by generateMonteCarlo() — a pure function. The canvas just draws whatever numbers it returns.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PPO Plan Share Score -->
+  <div class="grid">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon amber">&#x2726;</span> PPO Plan Share Score</div>
+        <span class="tag tag-amber">LAYER 2 — CALCULATED</span>
+      </div>
+      <div class="card-body">
+        <table class="tbl">
+          <thead><tr><th>Component</th><th class="num">Score</th><th class="num">Weight</th><th class="num">Weighted</th></tr></thead>
+          <tbody>
+            <tr><td>Network Breadth</td><td class="num">78</td><td class="num">25%</td><td class="num bold">19.5</td></tr>
+            <tr><td>Cost Competitiveness</td><td class="num">65</td><td class="num">30%</td><td class="num bold">19.5</td></tr>
+            <tr><td>Member Satisfaction</td><td class="num">82</td><td class="num">20%</td><td class="num bold">16.4</td></tr>
+            <tr><td>Clinical Outcomes</td><td class="num">71</td><td class="num">15%</td><td class="num bold">10.7</td></tr>
+            <tr><td>Admin Efficiency</td><td class="num">88</td><td class="num">10%</td><td class="num bold">8.8</td></tr>
+            <tr class="highlight-row">
+              <td class="bold" style="color:var(--accent)">Composite Score</td>
+              <td class="num"></td><td class="num"></td>
+              <td class="num bold" style="color:var(--accent);font-size:18px;">74.9</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- QC Pipeline -->
+  <div class="grid" style="margin-bottom:64px;">
+    <div class="card grid-full anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon green">&#x2713;</span> Intake Quality Control</div>
+        <span class="tag tag-green">PIPELINE — PRE-LAYER 1</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:14px;">Before data enters Layer 1, intake documents are validated. Bad data is caught before it can produce wrong reports.</p>
+        <table class="tbl">
+          <thead><tr><th>Document</th><th>Type</th><th>Fields Extracted</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="bold">Census File</td><td>XLSX</td><td>Employee count, DOB, dependents, zip</td><td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Passed</span></td></tr>
+            <tr><td class="bold">Benefit Guide</td><td>PDF</td><td>Plan names, tiers, premiums, copays</td><td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Passed</span></td></tr>
+            <tr><td class="bold">Claims Experience</td><td>XLSX</td><td>Paid claims, large claimants, trend</td><td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Passed</span></td></tr>
+            <tr><td class="bold">Stop-Loss Policy</td><td>PDF</td><td>Spec level, aggregating spec, carrier</td><td><span class="status"><span class="status-dot" style="background:var(--amber)"></span>1 warning</span></td></tr>
+            <tr><td class="bold">Rate Sheet</td><td>XLSX</td><td>Renewal rates, current vs proposed</td><td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Passed</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PAGE 3: UNDER THE HOOD
+     ═══════════════════════════════════════════════════════════ -->
+<div class="page" id="page-arch">
+
+  <div class="page-header">
+    <h2>Under the Hood</h2>
+    <p>This is what the separation looks like in practice. Layer 1 is data. Layer 2 is math. Layer 3 is display. They never touch each other.</p>
+  </div>
+
+  <div class="code-grid">
+    <div class="card anim-in">
+      <div class="card-head">
+        <div class="card-title"><span class="icon blue">{}</span> Layer 1 — Client Data</div>
+        <span class="tag tag-blue">JSON</span>
+      </div>
+      <div class="card-body">
+        <div class="codeblock">{
+  <span class="cs">"client"</span>: <span class="cs">"Congreso de Latinos Unidos"</span>,
+  <span class="cs">"plan_year"</span>: <span class="cs">"2025"</span>,
+  <span class="cs">"coverage"</span>: {
+    <span class="cs">"total_premium"</span>: <span class="cn">2,210,000</span>,
+    <span class="cs">"employer_cost"</span>: <span class="cn">1,850,000</span>,
+    <span class="cs">"employee_cost"</span>: <span class="cn">357,000</span>,
+    <span class="cs">"enrolled_members"</span>: <span class="cn">240</span>
+  },
+  <span class="cs">"claims"</span>: {
+    <span class="cs">"total_claims_paid"</span>: <span class="cn">1,176,458</span>,
+    <span class="cs">"total_premium"</span>: <span class="cn">1,401,610</span>,
+    <span class="cs">"admin_fees"</span>: <span class="cn">913,399</span>,
+    <span class="cs">"stop_loss_premium"</span>: <span class="cn">488,210</span>
+  }
+}</div>
+        <div class="note"><span class="note-dot" style="background:var(--blue)"></span> Swap this file for a new client. Every module, every calculation, every chart regenerates automatically.</div>
+      </div>
+    </div>
+
+    <div class="card anim-in anim-delay-1">
+      <div class="card-head">
+        <div class="card-title"><span class="icon amber">f(x)</span> Layer 2 — Calc Engine</div>
+        <span class="tag tag-amber">FUNCTIONS</span>
+      </div>
+      <div class="card-body">
+        <div class="codeblock"><span class="cc">// Pure functions. Data in, results out.</span>
+<span class="cc">// They never touch the DOM or HTML.</span>
+
+<span class="ck">function</span> calcLossRatio(claims) {
+  <span class="ck">return</span> claims.total_claims_paid
+       / claims.total_premium * <span class="cn">100</span>;
+}
+
+<span class="ck">function</span> calcFunding(claims, assumptions) {
+  <span class="ck">const</span> fi = claims.total_premium;
+  <span class="ck">const</span> sf = claims.total_claims_paid
+    * (<span class="cn">1</span> + assumptions.trend)
+    + assumptions.admin * members * <span class="cn">12</span>
+    + assumptions.stopLoss
+    + assumptions.margin;
+  <span class="ck">return</span> { fi, sf, savings: fi - sf };
+}</div>
+        <div class="note"><span class="note-dot" style="background:var(--amber)"></span> Rename any label in the report. These functions keep running identically. That's the whole point.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-bottom:64px;">
+    <div class="card grid-full anim-in anim-delay-2">
+      <div class="card-head">
+        <div class="card-title"><span class="icon green">&#x25A0;</span> Layer 3 — Template Renderer</div>
+        <span class="tag tag-green">PRESENTATION</span>
+      </div>
+      <div class="card-body">
+        <div class="codeblock"><span class="cc">// The template ONLY renders. It calls calc functions and displays results.</span>
+<span class="cc">// It never contains formulas or business logic.</span>
+
+<span class="ck">function</span> renderFundingTable() {
+  <span class="cc">// Call the calc engine</span>
+  <span class="ck">const</span> result = calcFunding(clientData.claims, getAssumptions());
+
+  <span class="cc">// Just display — no math here</span>
+  document.getElementById(<span class="cs">'fi-total'</span>).textContent = fmt(result.fi);
+  document.getElementById(<span class="cs">'sf-total'</span>).textContent = fmt(result.sf);
+  document.getElementById(<span class="cs">'savings'</span>).textContent = fmt(result.savings);
+}
+
+<span class="cc">// Safe to rename any label, restyle any element, reorder any column.</span>
+<span class="cc">// The math doesn't know. The math doesn't care.</span></div>
+        <div class="note"><span class="note-dot" style="background:var(--green)"></span> This is why the team can safely edit reports without fear of breaking calculations. Edit the presentation, not the logic.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════ -->
+<script>
+// ── NAVIGATION ──────────────────────────────────────────────
+function goPage(id, tabEl) {
+  const target = document.getElementById('page-' + id);
+  if (!target) return;
+
+  // Hide all OTHER pages immediately
+  document.querySelectorAll('.page').forEach(p => {
+    if (p !== target) {
+      p.classList.remove('visible');
+      p.classList.remove('active');
+    }
+  });
+
+  // Update tabs
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  if (tabEl) tabEl.classList.add('active');
+
+  // Show target page
+  target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      target.classList.add('visible');
+      triggerAnimations(target);
+    });
+  });
+
+  // Initialize interactive elements
+  if (id === 'modules') {
+    setTimeout(() => {
+      recalcFunding();
+      runMonteCarlo();
+      animateGauge(72);
+    }, 300);
+  }
+}
+
+// ── SCROLL ANIMATIONS ───────────────────────────────────────
+function triggerAnimations(container) {
+  const items = container.querySelectorAll('.anim-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('anim-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(item => {
+    item.classList.remove('anim-visible');
+    observer.observe(item);
+  });
+}
+
+// ── GAUGE ANIMATION ─────────────────────────────────────────
+function animateGauge(targetScore) {
+  const arc = document.getElementById('gauge-arc');
+  const num = document.getElementById('gauge-num');
+  if (!arc || !num) return;
+
+  const circumference = 2 * Math.PI * 56;
+  const targetOffset = circumference - (circumference * targetScore / 100);
+
+  arc.style.strokeDasharray = circumference;
+  arc.style.strokeDashoffset = circumference;
+
+  requestAnimationFrame(() => {
+    arc.style.strokeDashoffset = targetOffset;
+  });
+
+  // Animate number
+  let current = 0;
+  const duration = 1200;
+  const start = performance.now();
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    current = Math.round(eased * targetScore);
+    num.textContent = current;
+    if (progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ══════════════════════════════════════════════════════════════
+// LAYER 1: DATA
+// ══════════════════════════════════════════════════════════════
+const clientData = {
+  client: "Congreso de Latinos Unidos",
+  coverage: { total_premium: 2210000, employer_cost: 1850000, employee_cost: 357000, enrolled_members: 240 },
+  population: { total_employees: 156, dependents: 84, avg_age: 38.8, participation_rate: 0.84 },
+  claims: {
+    total_claims_paid: 1176458,
+    total_premium: 1401610,
+    admin_fees: 913399,
+    stop_loss_premium: 488210,
+    network_access_fee: 57600,
+    spec_level: 150000,
+    members: 240
+  }
+};
+
+// ══════════════════════════════════════════════════════════════
+// LAYER 2: CALCULATIONS — Pure functions, no DOM
+// ══════════════════════════════════════════════════════════════
+function calcFundingComparison(claims, assumptions) {
+  const trend = assumptions.trend / 100;
+  const slLoad = assumptions.stopLossLoad / 100;
+  const members = claims.members;
+
+  const fi_premium = claims.total_premium;
+  const fi_admin = claims.admin_fees;
+  const fi_total = fi_premium + fi_admin;
+
+  const sf_claims = claims.total_claims_paid * (1 + trend);
+  const sf_admin = assumptions.adminPepm * members * 12;
+  const sf_stopLoss = claims.stop_loss_premium * (1 + slLoad);
+  const sf_network = claims.network_access_fee;
+  const sf_margin = assumptions.margin;
+  const sf_total = sf_claims + sf_admin + sf_stopLoss + sf_network + sf_margin;
+
+  return {
+    fi: { premium: fi_premium, admin: fi_admin, total: fi_total },
+    sf: { claims: sf_claims, admin: sf_admin, stopLoss: sf_stopLoss, network: sf_network, margin: sf_margin, total: sf_total },
+    diff: fi_total - sf_total
+  };
+}
+
+function generateMonteCarlo(baseClaims, numSims, volatility) {
+  const results = [];
+  for (let i = 0; i < numSims; i++) {
+    let annual = 0;
+    for (let m = 0; m < 12; m++) {
+      const z = Math.sqrt(-2 * Math.log(Math.random())) * Math.cos(2 * Math.PI * Math.random());
+      annual += (baseClaims / 12) * (1 + z * volatility);
+    }
+    results.push(Math.max(0, annual));
+  }
+  results.sort((a, b) => a - b);
+  const mean = results.reduce((s, v) => s + v, 0) / results.length;
+  const p5 = results[Math.floor(numSims * 0.05)];
+  const p25 = results[Math.floor(numSims * 0.25)];
+  const p75 = results[Math.floor(numSims * 0.75)];
+  const p95 = results[Math.floor(numSims * 0.95)];
+  return { results, mean, p5, p25, p75, p95 };
+}
+
+// ══════════════════════════════════════════════════════════════
+// LAYER 3: PRESENTATION — Rendering only
+// ══════════════════════════════════════════════════════════════
+function fmt(n) {
+  if (Math.abs(n) >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1000) return '$' + Math.round(n).toLocaleString();
+  return '$' + Math.round(n);
+}
+
+function recalcFunding() {
+  const assumptions = {
+    trend: parseFloat(document.getElementById('a-trend').value) || 6.5,
+    adminPepm: parseFloat(document.getElementById('a-admin').value) || 45,
+    stopLossLoad: parseFloat(document.getElementById('a-sl').value) || 15,
+    margin: parseFloat(document.getElementById('a-margin').value) || 35000
+  };
+
+  const r = calcFundingComparison(clientData.claims, assumptions);
+  const tbody = document.getElementById('funding-body');
+
+  tbody.innerHTML = `
+    <tr><td>Premium / Expected Claims</td><td class="num">${fmt(r.fi.premium)}</td><td class="num">${fmt(r.sf.claims)}</td></tr>
+    <tr><td>Admin Fees</td><td class="num">${fmt(r.fi.admin)}</td><td class="num">${fmt(r.sf.admin)}</td></tr>
+    <tr><td>Stop-Loss</td><td class="num" style="color:var(--text-muted)">Included</td><td class="num">${fmt(r.sf.stopLoss)}</td></tr>
+    <tr><td>Network Access</td><td class="num" style="color:var(--text-muted)">Included</td><td class="num">${fmt(r.sf.network)}</td></tr>
+    <tr><td>Margin / Reserve</td><td class="num" style="color:var(--text-muted)">Included</td><td class="num">${fmt(r.sf.margin)}</td></tr>
+    <tr class="highlight-row">
+      <td class="bold" style="color:var(--accent)">Total Annual Cost</td>
+      <td class="num bold" style="font-size:14px">${fmt(r.fi.total)}</td>
+      <td class="num bold" style="font-size:14px">${fmt(r.sf.total)}</td>
+    </tr>
+    <tr class="highlight-row-green">
+      <td class="bold" style="color:var(--green)">Estimated Savings</td>
+      <td class="num" colspan="2" style="text-align:center;font-size:18px;font-weight:700;color:var(--green)">${r.diff > 0 ? '+' : ''}${fmt(r.diff)}</td>
+    </tr>
+  `;
+}
+
+function runMonteCarlo() {
+  const mc = generateMonteCarlo(clientData.claims.total_claims_paid, 10000, 0.18);
+
+  document.getElementById('mc-stats').innerHTML = `
+    <div class="metric" style="min-width:130px;flex:1"><div class="val" style="color:var(--green);font-size:17px">${fmt(mc.p5)}</div><div class="lbl">5th Pctl (Best Case)</div></div>
+    <div class="metric" style="min-width:130px;flex:1"><div class="val accent" style="font-size:17px">${fmt(mc.mean)}</div><div class="lbl">Expected (Mean)</div></div>
+    <div class="metric" style="min-width:130px;flex:1"><div class="val" style="color:var(--red);font-size:17px">${fmt(mc.p95)}</div><div class="lbl">95th Pctl (Worst Case)</div></div>
+  `;
+
+  const canvas = document.getElementById('mc-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 2;
+  const w = canvas.offsetWidth;
+  const h = 200;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+
+  const bins = 70;
+  const minVal = mc.results[0];
+  const maxVal = mc.results[mc.results.length - 1];
+  const binWidth = (maxVal - minVal) / bins;
+  const histogram = new Array(bins).fill(0);
+  mc.results.forEach(v => { histogram[Math.min(Math.floor((v - minVal) / binWidth), bins - 1)]++; });
+  const maxCount = Math.max(...histogram);
+  const barW = w / bins;
+  const padding = 20;
+
+  // Animated draw
+  let animProgress = 0;
+  function drawFrame() {
+    animProgress = Math.min(animProgress + 0.04, 1);
+    const ease = 1 - Math.pow(1 - animProgress, 3);
+    ctx.clearRect(0, 0, w, h);
+
+    histogram.forEach((count, i) => {
+      const targetH = (count / maxCount) * (h - padding);
+      const barH = targetH * ease;
+      const x = i * barW;
+      const binVal = minVal + i * binWidth;
+
+      if (binVal < mc.p5) ctx.fillStyle = 'rgba(52,211,153,0.45)';
+      else if (binVal > mc.p95) ctx.fillStyle = 'rgba(248,113,113,0.45)';
+      else ctx.fillStyle = 'rgba(232,115,74,0.3)';
+
+      const radius = Math.min(barW / 3, 2);
+      const bx = x + 1, by = h - barH, bw = barW - 2, bh = barH;
+      if (bh > 0) {
+        ctx.beginPath();
+        ctx.moveTo(bx + radius, by);
+        ctx.lineTo(bx + bw - radius, by);
+        ctx.quadraticCurveTo(bx + bw, by, bx + bw, by + radius);
+        ctx.lineTo(bx + bw, by + bh);
+        ctx.lineTo(bx, by + bh);
+        ctx.lineTo(bx, by + radius);
+        ctx.quadraticCurveTo(bx, by, bx + radius, by);
+        ctx.fill();
+      }
+    });
+
+    // Mean line
+    const meanX = ((mc.mean - minVal) / (maxVal - minVal)) * w;
+    ctx.strokeStyle = 'rgba(232,115,74,0.7)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(meanX, 8); ctx.lineTo(meanX, h); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '500 10px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Expected', meanX, 10);
+
+    // P5 / P95 labels
+    const p5x = ((mc.p5 - minVal) / (maxVal - minVal)) * w;
+    const p95x = ((mc.p95 - minVal) / (maxVal - minVal)) * w;
+    ctx.fillStyle = 'rgba(52,211,153,0.5)';
+    ctx.textAlign = 'center';
+    ctx.fillText('P5', Math.max(p5x, 15), h - 4);
+    ctx.fillStyle = 'rgba(248,113,113,0.5)';
+    ctx.fillText('P95', Math.min(p95x, w - 15), h - 4);
+
+    if (animProgress < 1) requestAnimationFrame(drawFrame);
+  }
+  requestAnimationFrame(drawFrame);
+}
+
+// ── INIT ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const storyPage = document.getElementById('page-story');
+  requestAnimationFrame(() => {
+    storyPage.classList.add('visible');
+    triggerAnimations(storyPage);
+  });
+});
+</script>
+</body>
+</html>

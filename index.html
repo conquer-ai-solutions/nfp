@@ -347,8 +347,8 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
 
   <div class="hero">
     <div class="hero-eyebrow"><span class="pulse"></span> Based on your walkthrough</div>
-    <h1>We watched the Loom. <span class="hl">Here's what we'd fix.</span></h1>
-    <p class="hero-sub">You've already taken Plan Pulse from 100 hours to under 4. The architecture is what's holding back the last mile: repeatability, safe editing, and clean separation of math from presentation.</p>
+    <h1>We watched the Loom. <span class="hl">Here's what we'd build.</span></h1>
+    <p class="hero-sub">You've already taken Plan Pulse from 100 man-hours to under 4. The architecture is what's holding back the last mile: repeatability, safe editing, and clean separation of math from presentation.</p>
     <div class="hero-client"><span class="dot"></span> Demo built using: Congreso de Latinos Unidos</div>
   </div>
 
@@ -375,8 +375,8 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
     </div>
     <div class="issue-card anim-in anim-delay-2">
       <div class="issue-num">ISSUE 3</div>
-      <h4>Data bleeds between clients</h4>
-      <p>When running a new analysis, data from the previous client sometimes carries over. The system doesn't cleanly reset between runs.</p>
+      <h4>Data carries between analyses</h4>
+      <p>When running a new analysis, data from the previous one sometimes carries over. The system doesn't cleanly reset between runs.</p>
       <div class="rich-quote">"Sometimes it seems to carry one analysis, the data from one analysis into the next."</div>
     </div>
     <div class="issue-card anim-in anim-delay-3">
@@ -387,15 +387,15 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
     </div>
   </div>
 
-  <div class="fix-header">One structural change fixes all four</div>
+  <div class="fix-header">Our recommendation: one structural change fixes all four</div>
   <div class="fix-sub">Separate the data, the math, and the display into three independent layers. Each one does one job.</div>
 
   <div class="fix-grid">
     <div class="fix-card data anim-in">
       <div class="fix-num blue">LAYER 1</div>
       <h4>Client Data</h4>
-      <p>One structured file per client. Census, claims, benefit details. Extracted from intake docs, validated by QC. Swapping this file is how you switch clients — nothing else changes.</p>
-      <div class="fix-solves">Fixes: data bleed between clients</div>
+      <p>One structured file per client. Census, claims, benefit details. Extracted from intake docs, validated by QC. Swapping this file is how you switch analyses — nothing else changes.</p>
+      <div class="fix-solves">Fixes: data carrying between analyses</div>
     </div>
     <div class="fix-card calc anim-in anim-delay-1">
       <div class="fix-num amber">LAYER 2</div>
@@ -412,7 +412,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
   </div>
 
   <div class="story-cta anim-in">
-    <p><strong>Tab 2</strong> rebuilds your actual Plan Pulse modules using this architecture — same data, same reports, but structured so each layer is independent.<br><strong>Tab 3</strong> shows the raw code so you can see exactly how the separation works.</p>
+    <p><strong>Tab 2</strong> shows how we'd rebuild your actual Plan Pulse modules using this architecture — same data, same reports, but structured so each layer is independent.<br><strong>Tab 3</strong> shows the raw code so you can see exactly how the separation works.</p>
     <button class="cta-btn" onclick="var t=document.querySelectorAll('.nav-tab')[1]; goPage('modules', t);">
       See your modules rebuilt
       <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -427,7 +427,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
 
   <div class="page-header">
     <h2>Your Modules, Rebuilt</h2>
-    <p>Same Plan Pulse reports. Same data. But now each module knows which layer it lives in. The tag on each card tells you: is this just displaying data, running a calculation, or fully interactive?</p>
+    <p>Same Plan Pulse reports. Same data. But in our proposed architecture, each module knows which layer it lives in. The tag on each card tells you: is this just displaying data, running a calculation, or fully interactive?</p>
   </div>
 
   <!-- NON-DYNAMIC: these are the ones Rich said work well already -->
@@ -446,7 +446,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
           <div class="metric"><div class="val">$357K</div><div class="lbl">Employee Cost</div></div>
           <div class="metric"><div class="val">240</div><div class="lbl">Enrolled Members</div></div>
         </div>
-        <div class="what-changed"><span class="wc-label">What changed:</span> These numbers come straight from the client data file (Layer 1). No math involved. Renaming "Total Premium" to "Annual Premium" changes a label — nothing else. The number stays exactly where it is.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> These numbers come straight from the client data file (Layer 1). No math involved. Renaming "Total Premium" to "Annual Premium" changes a label — nothing else. The number stays exactly where it is.</div>
       </div>
     </div>
   </div>
@@ -486,7 +486,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
             <div><span class="legend-dot" style="background:var(--red)"></span>Below 60 Review</div>
           </div>
         </div>
-        <div class="what-changed"><span class="wc-label">What changed:</span> Score is computed by a function in Layer 2. The gauge in Layer 3 just renders whatever number it gets. Changing the gauge colour or label text cannot affect the score.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> Score is computed by a function in Layer 2. The gauge in Layer 3 just renders whatever number it gets. Changing the gauge colour or label text cannot affect the score.</div>
       </div>
     </div>
   </div>
@@ -511,7 +511,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
             <tr><td class="bold">Employer Share</td><td class="num">83.8%</td><td class="num">78.0%</td><td class="num neg">+5.8%</td><td><span class="status"><span class="status-dot" style="background:var(--amber)"></span>Watch</span></td></tr>
           </tbody>
         </table>
-        <div class="what-changed"><span class="wc-label">What changed:</span> Every number here is computed by the calc engine from raw claims data. If you rename "Loss Ratio" to "Medical Loss Ratio" in the template, the formula doesn't know. It keeps running.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> Every number here is computed by the calc engine from raw claims data. If you rename "Loss Ratio" to "Medical Loss Ratio" in the template, the formula doesn't know. It keeps running.</div>
       </div>
     </div>
   </div>
@@ -537,7 +537,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
           <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m0 0L9 4m4 4L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
         <table class="tbl" style="margin-top:14px;"><thead><tr><th>Component</th><th class="num">Fully Insured</th><th class="num">Self-Funded</th></tr></thead><tbody id="funding-body"></tbody></table>
-        <div class="what-changed"><span class="wc-label">What changed:</span> The Calculate button calls one function in Layer 2: calcFunding(). That function reads the four inputs above, runs the math, and returns results. Layer 3 puts those results in the table. There are zero hard-coded values. Change an assumption, hit Recalculate, and every row updates — every time.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> The Calculate button calls one function in Layer 2: calcFunding(). That function reads the four inputs above, runs the math, and returns results. Layer 3 puts those results in the table. There are zero hard-coded values. Change an assumption, hit Recalculate, and every row updates — every time.</div>
       </div>
     </div>
   </div>
@@ -558,7 +558,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
           </button>
           <span style="font-size:11px;color:var(--text-muted);">Each run produces a fresh distribution</span>
         </div>
-        <div class="what-changed"><span class="wc-label">What changed:</span> The Monte Carlo function has no idea what the chart looks like. The chart has no idea how the numbers were generated. You can restyle the entire histogram without touching the simulation. That's the separation.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> The Monte Carlo function has no idea what the chart looks like. The chart has no idea how the numbers were generated. You can restyle the entire histogram without touching the simulation. That's the separation.</div>
       </div>
     </div>
   </div>
@@ -583,7 +583,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
             <tr class="highlight-row"><td class="bold" style="color:var(--accent)">Composite Score</td><td class="num"></td><td class="num"></td><td class="num bold" style="color:var(--accent);font-size:16px;">74.9</td></tr>
           </tbody>
         </table>
-        <div class="what-changed"><span class="wc-label">What changed:</span> This is the kind of module you said works well already. In the new architecture it stays exactly as simple as it is — Layer 2 computes the weighted scores, Layer 3 renders the table. Renaming "PPO" to "Preferred Provider Organization" is a Layer 3 edit only.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> This is the kind of module you said works well already. In the new architecture it stays exactly as simple as it is — Layer 2 computes the weighted scores, Layer 3 renders the table. Renaming "PPO" to "Preferred Provider Organization" is a Layer 3 edit only.</div>
       </div>
     </div>
   </div>
@@ -597,7 +597,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
         <span class="tag tag-green">PRE-LAYER 1</span>
       </div>
       <div class="card-body">
-        <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px;">You described the intake flow: benefit guides, invoices, claim files, census files coming in as PDF, Excel, Word. The QC step validates everything before it enters the data layer — so bad data never reaches the calc engine.</p>
+        <p style="font-size:12.5px;color:var(--text-dim);margin-bottom:12px;">You described the intake flow: benefit guides, invoices, claim files, census files coming in as PDF, Excel, Word. In our architecture, we place a QC step before the data layer — so bad data never reaches the calc engine.</p>
         <table class="tbl">
           <thead><tr><th>Document</th><th>Type</th><th>Fields Extracted</th><th>Status</th></tr></thead>
           <tbody>
@@ -608,7 +608,7 @@ canvas { width: 100%; border-radius: var(--radius-sm); }
             <tr><td class="bold">Invoice / Rate Sheet</td><td>XLSX</td><td>Renewal rates, current vs proposed</td><td><span class="status"><span class="status-dot" style="background:var(--green)"></span>Passed</span></td></tr>
           </tbody>
         </table>
-        <div class="what-changed"><span class="wc-label">What changed:</span> The QC step now sits before Layer 1. Once data passes validation, it enters the system as a clean JSON file. Every module downstream reads from that same file. No data from a previous client can leak through because each run starts from a fresh validated file.</div>
+        <div class="what-changed"><span class="wc-label">How this fixes it:</span> The QC step sits before Layer 1. Once data passes validation, it enters the system as a clean JSON file. Every module downstream reads from that same file. No data from a previous analysis can carry over because each run starts from a fresh validated file.</div>
       </div>
     </div>
   </div>
